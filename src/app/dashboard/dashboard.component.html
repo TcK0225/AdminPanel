@@ -1,0 +1,219 @@
+<h4 class="font-weight-bold mb-4 text-uppercase">Dashboard</h4>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+        <div class="card border-0 shadow-sm card-1">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalJobs }}</span>
+                    <i class="fas fa-tasks float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Jobs</h5>
+                <hr class="divider">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Current</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalCurrentJobs }}</span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Expired</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalExpiredJobs }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+        <div class="card border-0 shadow-sm card-2">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalTasks }}</span>
+                    <i class="fas fa-tasks float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Tasks</h5>
+                <hr class="divider">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Done</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalDoneTasks }}</span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Paid</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalPaidTasks }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+        <div class="card border-0 shadow-sm card-5">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalAdvertise }}</span>
+                    <i class="fas fa-ad float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Advertisements</h5>
+                <hr class="divider">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Active</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ activeAds }}</span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Expired</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ expiredAds }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+        <div class="card border-0 shadow-sm card-3">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalUsers }}</span>
+                    <i class="fas fa-users float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Users</h5>
+                <hr class="divider">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Active</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalActiveUsers }}</span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Banned</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ totalBannedUsers }}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mb-3">
+        <div class="card border-0 shadow-sm card-4">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalTransactions }}<small class="font-italic">  {{ totalTransactionsAmount | currency:'MYR':'symbol-narrow':'.2-2'  }}</small></span>
+                    <i class="fas fa-money-check-alt float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Transactions (Segment One)</h5>
+                <hr class="divider">
+                <div class="row">
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Pending Processing</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ overallReceivedTransactions }}<small class="font-italic">  {{ overallReceivedAmount | currency:'MYR':'symbol-narrow':'.2-2' }}</small></span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Earned by <i>JOBS</i></h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ overallEarnTransactions }}<small class="font-italic">  {{ overallEarnAmount | currency:'MYR':'symbol-narrow':'.2-2'  }}</small></span>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-title text-uppercase text-center">Paid to User</h6>
+                        <h4 class="card-text text-center">
+                            <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                            <span class="font-weight-bold">{{ overallPaidTransactions }}<small class="font-italic">  {{ overallPaidAmount | currency:'MYR':'symbol-narrow':'.2-2'  }}</small></span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 mb-3">
+        <div class="card border-0 shadow-sm card-6">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalTransactions2 }}<small class="font-italic">  {{ totalTransactionsAmount2 | currency:'MYR':'symbol-narrow':'.2-2'  }}</small></span>
+                    <i class="fas fa-money-check-alt float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Transactions (Segment Two)</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 mb-3">
+        <div class="card border-0 shadow-sm card-7">
+            <div class="card-body text-white">
+                <h3 class="card-text">
+                    <div class="spinner-border" *ngIf="loadingSpinner"></div>
+                    <span class="font-weight-bold">{{ totalTransactions3 }}<small class="font-italic">  {{ totalTransactionsAmount3 | currency:'MYR':'symbol-narrow':'.2-2'  }}</small></span>
+                    <i class="fas fa-money-check-alt float-right"></i>
+                </h3>
+                <h5 class="card-title mt-3 text-uppercase">Total Transactions (Segment Three)</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- List current user details -->
+<div class="card border-0 shadow-sm mt-4">
+    <!-- <img class="card-img-top" src="holder.js/100px180/" alt=""> -->
+    <div *ngIf="user" class="card-body">
+        <div class="spinner-border spinner-2" *ngIf="loadingSpinner"></div>
+        <h4 class="card-title">{{ user.full_name }}</h4>
+        <table class="table table-borderless mt-4">
+            <tbody>
+            <!-- <tr>
+                <td scope="row" class="px-0 text-muted">Date of Birth</td>
+                <td>{{ viewUserModal.DATE_OF_BIRTH  | date: 'mediumDate' }}</td>
+            </tr> -->
+            <tr>
+                <td scope="row" class="px-0 text-muted">Contact Number</td>
+                <td>{{ user.contact_no }}</td>
+            </tr>
+            <tr>
+                <td scope="row" class="px-0 text-muted">Email</td>
+                <td>{{ user.email | lowercase}}</td>
+            </tr>
+            <tr>
+                <td scope="row" class="px-0 text-muted">NRIC / Passport</td>
+                <td>{{ user.nric }}</td>
+            </tr>
+            <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Location</td>
+                <td class="pt-0">{{ user.city | titlecase }}, {{ user.state | titlecase }}</td>
+            </tr>
+            <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Expertise In</td>
+                <td class="pt-0">{{ expList }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- !List current user details -->

@@ -1,0 +1,21 @@
+.sign-in-card {
+    background-color: white;
+}
+
+h1 {
+    color: var(--secondaryColor);
+}
+
+
+.input-group-text {
+    background-color: white; 
+    box-shadow: 0px 2px var(--secondaryColor) inset;
+}
+
+input {
+    box-shadow: 0px 2px var(--secondaryColor) inset;
+}
+
+a {
+    color: rgb(143, 143, 143);
+}

@@ -1,0 +1,87 @@
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card px-5 pt-5 border-0 shadow sign-in-card">
+        <div class="row align-items-center text-center">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 px-5">
+            <img class="img-fluid" src="assets/jobs-logo.png" alt="JOBS IT Logo">
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+            <form name="userSignIn" (ngSubmit)="signInUser.form.valid && login()" #signInUser="ngForm" novalidate>
+              <div class="card-body">
+                <h3 class="card-title text-uppercase text-center">Sign In</h3>
+                <h1 class="asterisk" class="text-center">* * *</h1>
+
+                <div class="input-group mt-3 text-center">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="signInEmail">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  <input type="email" class="form-control border-left-0" placeholder="Email Address"
+                    aria-label="Email Address" aria-describedby="signInEmail" name="signInEmail"
+                    [(ngModel)]="signInModelForm.EMAIL_ADDRESS" #userEmail="ngModel" required (keydown.enter)="$event.preventDefault()"/>
+                </div>
+                <div *ngIf="userEmail.invalid && (userEmail.dirty || userEmail.touched)"
+                  class="alert alert-danger mt-2">
+                  <div *ngIf="userEmail.errors.required">Please enter a valid email address</div>
+                </div>
+
+                <div class="input-group mt-4 text-center">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="signInPassword">
+                      <i class="fas fa-key"></i>
+                    </span>
+                  </div>
+                  <input type="password" class="form-control border-left-0" placeholder="Password" aria-label="Password"
+                    aria-describedby="signInPassword" name="signInPassword" [(ngModel)]="signInModelForm.PASSWORD"
+                    #userPassword="ngModel" required (keyup.enter)="login()" />
+                </div>
+                <div *ngIf="userPassword.invalid && (userPassword.dirty || userPassword.touched)"
+                  class="alert alert-danger mt-2">
+                  <div *ngIf="userPassword.errors.required">Password is required</div>
+                </div>
+
+                <small>
+                  <a href="Javascript:void(0)" class="d-block text-right" data-toggle="modal" data-target="#enterEmailModal">Forgot your
+                    password?
+                  </a>
+                </small>
+
+                <button class="btn custom-btn btn-block mt-5 d-block mx-auto" type="submit">Login
+                  <i class="fas fa-sign-in-alt pl-2"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Email Modal for Forgot Password -->
+<div class="modal fade" id="enterEmailModal" tabindex="-1" role="dialog" aria-labelledby="enterEmailModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="enterEmailModalLabel">Forgot Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please enter your email address.</p>
+        <input type="email" class="form-control" name="emailAddress" [(ngModel)]="userEmailAddress">
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn custom-btn" data-dismiss="modal" (click)="forgotPassword()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- !Email Modal for Forgot Password -->

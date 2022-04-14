@@ -1,0 +1,217 @@
+<ngx-spinner></ngx-spinner>
+
+<!-- Vac Details -->
+<ng-container *ngIf="viewVacModal && viewVacModal.created_by">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="Javascript:void(0)" (click)="goBack()">Vacancy</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ viewVacModal.title | titlecase }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col text-right">
+      <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#editVacDetailsModal">
+        <i class="fas fa-pen"></i>
+      </button>
+      <button *ngIf="viewVacModal.status == true" class="btn btn-danger" (click)="deleteVac()">
+        <i class="fas fa-ban"></i>
+      </button>
+      <button *ngIf="viewVacModal.status == false" class="btn btn-success" (click)="activeVac()">
+        <i class="fa fa-check-circle-o"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="card border-0 mt-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <img [attr.src]="viewVacModal.image_url" class="img-fluid shadow-sm">
+          <p class="text-muted created-by"><i>Created by: {{ viewVacModal.created_by.full_name }}</i></p>
+          <p class="text-muted last-updated"><i>Last Updated: {{ viewVacModal.updated_at | date: 'short' }}</i></p>
+        </div>
+        <div class="col">
+          <p class="text-uppercase font-weight-bold job-type">{{ viewVacModal.job_category }} ( {{
+            viewVacModal.job_type_title }} )</p>
+          <h3 class="job-title">{{ viewVacModal.title | titlecase }}</h3>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="px-0 text-muted">Created on</td>
+                <td>{{ viewVacModal.created_at | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Address</td>
+                <td class="pt-0">{{ viewVacModal.address }},
+                  {{ viewVacModal.city | titlecase }}, {{ viewVacModal.state | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Qualification</td>
+                <td class="pt-0">{{ viewVacModal.qualification }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Experience Required</td>
+                <td class="pt-0">{{ viewVacModal.experience }} Years</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Language(s)</td>
+                <td class="pt-0">{{ viewVacModal.language }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Salary Expectation(RM)</td>
+                <td class="pt-0">{{ viewVacModal.min_salary }} - {{ viewVacModal.max_salary }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Contact No.</td>
+                <td class="pt-0">{{ viewVacModal.cty_code }} {{ viewVacModal.contact }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-3" id="details">
+    <div class="card-body">
+      <h3>Other Details</h3>
+      <div [innerHTML]="viewVacModal.other_details | noSanitize"></div>
+    </div>
+  </div>
+
+</ng-container>
+<!-- !Vac Details -->
+
+
+<!-- Edit Vac Details Model -->
+<div *ngIf="editVacModal" class="modal fade" id="editVacDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editVacetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="editVacForm" (ngSubmit)="editVac.form.valid && saveVacDetails()" #editVac="ngForm" novalidate>
+        <div name="userModalHeader" class="modal-header border-0 text-white">
+          <h5 class="modal-title" id="editVacDetailsModalLabel">
+            Edit Vacancy Details
+            <i class="fas fa-edit ml-2 text-white text-center"></i>
+          </h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-2">
+          <span class="text-center d-block mt-4">
+            <img name="propic" [attr.src]="viewImage" class="img-fluid mx-auto d-block" alt="Vacancy Image">
+          </span>
+
+          <div class="form-group mt-5">
+            <label for="" class="font-weight-bold">Upload New Vacancy Image</label>
+            <input type="file" #vacImageInput class="form-control-file" (change)="vacImagePreview($event)" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Title</label>
+            <input type="text" class="form-control" name="vacTitle" [(ngModel)]="editVacModal.title" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job Type</label>
+            <select class="form-control" name="editVacExpertise" [(ngModel)]="editVacModal.job_type">
+              <option *ngFor="let item of expertiseList" value="{{ item.value }}">{{ item.display }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Category</label>
+            <select class="form-control" name="editVacCategory" [(ngModel)]="editVacModal.job_category">
+              <option *ngFor="let item of categoryList" value="{{ item.value }}">{{ item.display }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Contact</label>
+            <div class="input-group">
+              <div class="input-group-append">
+                <span class="input-group-text">{{ editVacModal.cty_code }}</span>
+              </div>
+              <input type="text" class="form-control" name="contact" [(ngModel)]="editVacModal.contact" />
+            </div>
+
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Address</label>
+            <input type="text" class="form-control" name="address" [(ngModel)]="editVacModal.address" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">State</label>
+            <select class="form-control" name="editVacState" [(ngModel)]="editVacModal.state">
+              <ng-container *ngFor="let item of stateCityList; let i = index">
+                <ng-container *ngIf="i > 0">
+                  <option *ngIf="item.admin !== '' && item.admin !== stateCityList[i-1].admin">
+                    {{ item.admin.toUpperCase() }}</option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">City</label>
+            <select class="form-control" name="editVacCity" [(ngModel)]="editVacModal.city">
+              <ng-container *ngFor="let item of stateCityList">
+                <option *ngIf="item.admin.toUpperCase() === upperCheck()">{{ item.city.toUpperCase() }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Qualification</label>
+            <input type="text" class="form-control" name="vacQualification" [(ngModel)]="editVacModal.qualification" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Experience (Years)</label>
+            <input type="number" class="form-control" name="vacExperience" [(ngModel)]="editVacModal.experience" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Languages</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name="input-Lang" placeholder="Languages" [(ngModel)]="inputLang">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-primary" (click)="addLanguage()">Add</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="languages.length > 0">
+            <h5>Languages Requirement:</h5>
+            <div class="container">
+              <ul>
+                <li *ngFor="let item of languages; let i = index" [attr.data-index]="i">
+                  <h6>{{ item }} <i class="fas fa-times pl-2" (click)="removeLang(i)"></i></h6>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Salary (MYR)</label>
+            <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Other Details</label>
+            <ckeditor name="vacOtherDetails" [editor]="Editor" [(ngModel)]="editVacModal.other_details "></ckeditor>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn custom-btn px-3" type="submit">
+            Submit<i class="fas fa-save pl-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !Edit Vac Details Model -->

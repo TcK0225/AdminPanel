@@ -1,0 +1,79 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "PUBLIC-POST",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "`ACCEPTED-EMPLOYEES`",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "`CREATED-DATE`",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "PUBLIC-POST",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "`ACCESS-JOB`",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "`CREATED-DATE`",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "PUBLIC-POST",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "`CREATED-BY`",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "`CREATED-DATE`",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "PUBLIC-POST",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "`JOB-TYPE`",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "TYPE",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "`CREATED-DATE`",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "PUBLIC-POST",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "STATUS",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "`CREATED-DATE`",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

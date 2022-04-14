@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-10">
+    <h4 class="font-weight-bold mb-5 text-uppercase">Unsettled Transactions</h4>
+  </div>
+  <div class="col-2">
+    <button class="btn btn-lg btn-success float-right" (click)="exportExcel()">Export <i class="fas fa-file-export"></i></button>
+  </div>
+</div>
+<div class="card border-0">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover" width="100%" id="table_transation">
+        <thead class="text-uppercase">
+          <tr>
+            <th>Transaction ID</th>
+            <th>Post ID</th>
+            <th>Jobs</th>
+            <th>Pay By</th>
+            <th>Pay To</th>
+            <th>Date</th>
+            <th class="text-right">Amount (MYR)</th>
+            <th class="text-right">Charges (MYR)</th>
+            <th class="text-center">Pay (MYR)</th>
+            <th>Bank Name</th>
+            <th>Account No</th>
+            <th>Beneficiary Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let transaction of transactionList; let i = index;">
+            <ng-container>
+              <td scope="row">{{ transaction.tran_id }}</td>
+              <td>{{ transaction.job_id }}</td>
+              <td>{{ transaction.title }}</td>
+              <td>{{ transaction.pay_by_name }}</td>
+              <td>{{ transaction.pay_to_name }}</td>
+              <td>{{ transaction.pay_date | date: 'medium' }}</td>
+              <td class="text-right">{{ transaction.amount | number: '1.2-2' }}</td>
+              <td class="text-right">{{ transaction.charges | number: '1.2-2' }}</td>
+              <td class="text-right">{{ transaction.pay | number: '1.2-2' }}</td>
+              <td>{{ transaction.bank_name }}</td>
+              <td>{{ transaction.bank_acc }}</td>
+              <td>{{ transaction.beneficiary }}</td>
+              <!-- <td>Stripe</td> -->
+              <td><button class="btn btn-sm btn-primary" (click)="payToReceiver(transaction.id, i)">Pay</button></td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="text-center mt-3">
+      <button class="btn btn btn-info btn-sm float-left" (click)="getTransactionDetails('prev')"
+              [disabled]="disablePrev">Previous</button> <b>Page no: {{ currentPage }}</b>
+      <button class="btn btn btn-info btn-sm float-right" (click)="getTransactionDetails('next')" [disabled]="disableNext">Next</button>
+    </div> 
+
+  </div>
+</div>

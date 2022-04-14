@@ -1,0 +1,293 @@
+<ngx-spinner></ngx-spinner>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="Javascript:void(0)" (click)="goBack()">Tasks</a></li>
+    <li class="breadcrumb-item active" aria-current="page">All Tasks</li>
+  </ol>
+</nav>
+
+<!-- Show selected user's task list -->
+<div class="row">
+  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-3" *ngFor="let task of tasks">
+    <div class="card border-0 task-card" (click)="viewDetails(task)">
+      <div class="card-body">
+        <small class="type font-italic">{{ task.postinfo.type | titlecase }}</small>
+        <h5 class="card-title text-uppercase font-weight-bold">{{ task.postinfo.title }}</h5>
+        <p class="card-text mt-3">Date: {{ task.job_start_time | date: 'shortDate' }}</p>
+        <p class="card-text" style="margin-top: -10px">Time: {{ task.job_start_time | date: 'shortTime' }} -
+          {{ task.job_end_time | date: 'shortTime' }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- !Show selected user's task list -->
+
+<hr *ngIf="viewDetailsStatus">
+
+<ng-container *ngIf="selectedTaskType !== '' && creator !== undefined && viewDetailsStatus">
+  <ng-container *ngIf="selectedTaskType == 'FIND-JOB'; then findJob else requestEmployees"></ng-container>
+
+  <ng-template #findJob>
+    <div class="card border-0 mt-4">
+      <div class="card-header border-0 font-weight-bold">
+        {{ selectedTask | titlecase }}
+        <button class="btn float-right" *ngFor="let hired of viewHList"
+          (click)="deleteTask(hired, 'FIND-JOB')">
+          <i class="fas fa-trash-alt text-danger delete-icon"></i>
+        </button>
+      </div>
+
+      <div class="card-body mx-2">
+        <p class="text-uppercase posted-by">Hired</p>
+        <div class="row align-items-center">
+          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-2">
+            <img [src]="creator.profile.profile_image_url" class="img-fluid avatar-img">
+          </div>
+          <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11">
+            <h6 class="card-text">{{ creator.profile.full_name | titlecase }}</h6>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="text-muted">Field</td>
+                <td>{{ viewFindJobModal.job_type }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Date</td>
+                <td class="pt-0">{{ viewFindJobModal.available_start_time | date:'shortDate' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Available Time</td>
+                <td class="pt-0">{{ viewFindJobModal.available_start_time | date:'shortTime' }} -
+                  {{ viewFindJobModal.available_end_time | date:'shortTime' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Salary</td>
+                <td class="pt-0">{{ viewFindJobModal.salary_per_hour | currency:'MYR':'symbol-narrow':'.2-2' }} / hour</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Status</td>
+                <td class="pt-0" *ngIf="viewFindJobModal.status == true">Available</td>
+                <td class="pt-0" *ngIf="viewFindJobModal.status == false">Not Available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+
+        <h6 class="text-uppercase font-weight-bold mt-4">Paid Information</h6>
+        <div class="row mt-3 align-items-center" *ngFor="let hired of viewHList">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="text-muted">Start Time</td>
+                <td>{{ hired.start_time | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">End Time</td>
+                <td class="pt-0">{{ hired.end_time | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid Status</td>
+                <td class="pt-0">{{ hired.paid_status == 'false' ? 'No' : 'Yes' }}</td>
+              </tr>
+              <tr *ngIf="hired.paid_status !== 'false'">
+                <td scope="row" class="pt-0 text-muted">Amount Paid</td>
+                <td class="pt-0">{{ hired.paid_amount | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+              <tr *ngIf="hired.paid_status !== 'false'">
+                <td scope="row" class="pt-0 text-muted">Paid Date</td>
+                <td class="pt-0">{{ hired.paid_datetime | date: 'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+
+        
+        <div class="row mt-3 align-items-center" *ngFor="let hired of viewHList">
+          <div *ngIf="hired.paid_status !== 'false'">
+          <h6 class="text-uppercase font-weight-bold mt-4">Payment Details</h6>
+            <table class="table table-borderless">
+              <tbody>
+              <tr>
+                <td scope="row" class="text-muted">Transaction ID</td>
+                <td>{{ hired.payment.tran_id }}</td>
+              </tr>
+              <tr *ngIf="hired.payment.amount">
+                <td scope="row" class="pt-0 text-muted">Date</td>
+                <td class="pt-0">{{ hired.payment.pay_date | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid Status</td>
+                <td class="pt-0">{{ hired.payment.status }}</td>
+              </tr>
+              <tr *ngIf="hired.payment.amount">
+                <td scope="row" class="pt-0 text-muted">Amount</td>
+                <td class="pt-0">{{ hired.payment.amount  | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid By</td>
+                <td class="pt-0">{{ hired.payment.pay_by | titlecase }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid To</td>
+                <td class="pt-0">{{ hired.payment.pay_to | titlecase }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+  <ng-template #requestEmployees>
+    <div class="card border-0 mt-4">
+      <div class="card-header border-0 font-weight-bold">
+        {{ selectedTask | titlecase }}
+        <button class="btn float-right" *ngFor="let request of viewRList"
+          (click)="deleteTask(request, 'REQUEST-EMPLOYEES')">
+          <i class="fas fa-trash-alt text-danger delete-icon"></i>
+        </button>
+      </div>
+
+      <div class="card-body mx-2">
+        <p class="text-uppercase posted-by">Posted By</p>
+        <div class="row align-items-center">
+          <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-2">
+            <img [src]="creator.profile.profile_image_url" class="img-fluid avatar-img">
+          </div>
+          <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11">
+            <h6 class="card-text">{{ creator.profile.full_name | titlecase }}</h6>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="text-muted">Required Field</td>
+                <td>{{ viewRequestEmployeesModal.job_type }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Start Date</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.job_start_time | date: 'shortDate' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Time</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.job_start_time | date: 'shortTime' }} -
+                  {{ viewRequestEmployeesModal.job_end_time | date: 'shortTime' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Duration</td>
+                <td class="pt-0">{{ getDuration() }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Salary</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.salary_per_hour | currency:'MYR':'symbol-narrow':'.2-2' }} / hour</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Hiring No.</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.num_of_hires }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Other Details</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.other_details }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <ng-container *ngIf="viewRList !== undefined">
+            <hr>
+            <h6 class="text-uppercase font-weight-bold mt-4">Paid Information</h6>
+          </ng-container>
+        </div>
+
+        <div class="row mt-4 align-items-center">
+          <ng-container *ngFor="let request of viewRList">
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-2">
+                  <img [src]="request.profile_image_url" [alt]="request.name" class="img-fluid avatar-img"
+                    width="200">
+                </div>
+                <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-10">
+                  <h6 class="card-text">{{ request.name | titlecase }}</h6>
+                </div>
+          </ng-container>
+        </div>
+
+        <div class="row mt-4" *ngFor="let request of viewRList" >
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Start Time</td>
+                <td class="pt-0">{{ request.start_time | date: 'shortTime' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">End Time</td>
+                <td class="pt-0">{{ request.end_time | date: 'shortTime' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid Status</td>
+                <td class="pt-0">{{ request.paid_status == 'false' ? 'No' : 'Yes' }}</td>
+              </tr>
+              <tr *ngIf="request.paid_status != 'false'">
+                <td scope="row" class="pt-0 text-muted">Amount Paid</td>
+                <td class="pt-0">{{ request.paid_amount | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+              <tr *ngIf="request.paid_status != 'false'">
+                <td scope="row" class="pt-0 text-muted">Paid Date</td>
+                <td class="pt-0">{{ request.paid_datetime | date: 'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+
+        <div class="row mt-3 align-items-center" *ngFor="let request of viewRList">
+          <div *ngIf="request.paid_status != 'false'">
+            <h6 class="text-uppercase font-weight-bold mt-4" >Payment Details</h6>
+            <table class="table table-borderless">
+              <tbody>
+              <tr>
+                <td scope="row" class="text-muted">Transaction ID</td>
+                <td>{{ request.payment.tran_id }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Date</td>
+                <td class="pt-0">{{ request.payment.pay_date | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Paid Status</td>
+                <td class="pt-0">{{ request.payment.status }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="pt-0 text-muted">Amount</td>
+                <td class="pt-0">{{ request.payment.amount | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+                <tr>
+                  <td scope="row" class="pt-0 text-muted">Paid By</td>
+                  <td class="pt-0">{{ request.payment.pay_by | titlecase }}</td>
+                </tr>
+                <tr>
+                  <td scope="row" class="pt-0 text-muted">Paid To</td>
+                  <td class="pt-0">{{ request.payment.pay_to | titlecase }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

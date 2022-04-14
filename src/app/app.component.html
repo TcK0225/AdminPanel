@@ -1,0 +1,148 @@
+<div [ngClass]="{'top-navbar-hide': (globalVar.currentPageURL === 'signInUp' || globalVar.currentPageURL === 'login')}">
+  <nav id="topNavBar" class="navbar navbar-expand-lg fixed-top top-navbar navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbarNav"
+      aria-controls="topNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand ml-3 ml-lg-0" href="#">
+      <img class="img-fluid" src="assets/jobs-logo.png" width="70">
+    </a>
+
+    <ul class="navbar-nav top-navbar-right">
+      <li class="nav-item active" id="logoutButton">
+        <a class="nav-link" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <span class="mr-2" data-toggle="tooltip" data-placement="top" title="Sign Out">
+            <i class="fas fa-sign-out-alt sign-out"></i>
+          </span>
+
+          <!-- <img class="profile-image rounded-circle" src="http://www.bootstrapdash.com/demo/star-admin-free/jquery/images/faces/face1.jpg" /> -->
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+          <!-- <a class="dropdown-item" href="#"><i class="fas fa-cog pr-3"></i> Settings</a> -->
+          <a class="dropdown-item" href="Javascript:void(0)" (click)="logout()"><i class="fas fa-sign-out-alt pr-3"></i>
+            Sign Out</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Side Navbar -->
+  <div class="container-fluid" id="sideNavBar">
+    <div class="row">
+      <div class="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="profile-wrapper">
+                <div class="spinner-border" *ngIf="globalVar.loadSpinner"></div>
+                <div class="profile-image">
+                  <img class="img-fluid rounded-circle" [src]="globalVar.authUserInfo.profile_image_url" width="65">
+                </div>
+                <div class="profile-name text-center">
+                  <p id="sideNavBarTitle">{{ globalVar.authUserInfo.full_name }}</p>
+                </div>
+              </div>
+            </div>
+            <hr style="background-color: rgba(255, 255, 255, 0.925); width: 90%;">
+          </li>
+
+          <li class="nav-item mt-3" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'dashboard'}">
+            <a routerLink="/dashboard" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fas fa-tachometer-alt"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'jobs' || globalVar.currentPageURL === 'jobs/view-edit-jobs'}">
+            <a routerLink="/jobs" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fas fa-list-ul"></i>
+              <span class="menu-title">Jobs</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'tasks' || globalVar.currentPageURL === 'tasks/view-task'}">
+            <a routerLink="/tasks" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fas fa-tasks"></i>
+              <span class="menu-title">User's Tasks</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'ads' || globalVar.currentPageURL === 'advertise/view-edit-advertise'}">
+            <a routerLink="/ads" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fab fa-adversal"></i>
+              <span class="menu-title">Advertisement</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'vac' || globalVar.currentPageURL === 'vac/view-edit-vac'}">
+            <a routerLink="/vac" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fa fa-binoculars"></i>
+              <span class="menu-title">Vacancy</span>
+            </a>
+          </li>
+
+          <li class="nav-item" [ngClass]="{'active': globalVar.currentPageURL === 'transactions'}">
+            <a routerLink="/transactions" routerLinkActive="active" href="#" class="nav-link">
+              <i class="fas fa-file-invoice-dollar menu-icon"></i>
+              <span class="menu-title">Unsettled<br>Transactions</span>
+            </a>
+          </li>
+
+          
+          <li class="nav-item" [ngClass]="{'active': globalVar.currentPageURL === 'transaction-history'}">
+            <a routerLink="/transaction-history" routerLinkActive="active" href="#" class="nav-link">
+              <i class="fas fa-history menu-icon"></i>
+              <span class="menu-title">Transaction<br>History</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'payment-config'}">
+            <a routerLink="/payment-config" routerLinkActive="active" href="#" class="nav-link">
+              <i class="fa fa-cogs menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'users' || globalVar.currentPageURL === 'users/view-edit-user'}">
+            <a routerLink="/users" routerLinkActive="active" href="#" class="nav-link">
+              <i class="menu-icon fas fa-users"></i>
+              <span class="menu-title">Users</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngIf="!globalVar.accountantRole"
+            [ngClass]="{'active': globalVar.currentPageURL === 'notification'}">
+            <a routerLink="/notification" routerLinkActive="active" href="#" class="nav-link">
+              <i class="fas fa-bell menu-icon"></i>
+              <span class="menu-title">Notifications</span>
+            </a>
+          </li>
+
+        </ul>
+
+        <div class="develop-by-footer">
+          <p>V. 2.0.2</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- !Side Navbar -->
+
+</div>
+<!-- !Top navbar -->
+
+
+<!-- Router Content -->
+<div [ngClass]="{'content': globalVar.currentPageURL !== 'signInUp', 'content3': globalVar.currentPageURL === 'login'}">
+  <router-outlet></router-outlet>
+</div>
+<!-- !Router Content -->

@@ -1,0 +1,440 @@
+<ngx-spinner></ngx-spinner>
+
+<ng-container *ngIf="selectedPostType === 'FIND-JOB'; then findJob else requestEmployees"></ng-container>
+
+<!-- View Find Job Details -->
+<ng-template #findJob>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="Javascript:void(0)" (click)="goBack()">Jobs</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ viewFindJobModal.title | titlecase }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col text-right">
+      <button class="btn custom-btn mr-2" data-toggle="modal" data-target="#editFindJobDetailsModal">
+        <i class="fas fa-pen"></i>
+      </button>
+      <button class="btn btn-danger" (click)="deletePost()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Job Details -->
+  <div class="card border-0 mt-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <img [attr.src]="viewFindJobModal.image_url"  class="img-fluid shadow-sm">
+          <p *ngIf="user" class="text-muted created-by"><i>Created by: {{ user.profile.full_name }}</i></p>
+          <p class="text-muted last-updated"><i>Last Updated: {{ viewFindJobLastUpdatedDate | date: 'short' }}</i></p>
+        </div>
+        <div class="col">
+          <p class="text-uppercase font-weight-bold job-type">{{ viewFindJobModal.job_type_title }}</p>
+          <h3 class="job-title">{{ viewFindJobModal.title | titlecase }}</h3>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="px-0 text-muted">Available Time</td>
+                <td>{{ viewFindJobAvailableStartTime | date: 'short' }} -
+                  {{ viewFindJobAvailableEndTime | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Address</td>
+                <td class="pt-0">{{ viewFindJobModal.address }},
+                  {{ viewFindJobModal.city | titlecase }}, {{ viewFindJobModal.state | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Salary/hr</td>
+                <td class="pt-0">{{ viewFindJobModal.salary_per_hour | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Hire Status</td>
+                <td class="pt-0" *ngIf="viewFindJobModal.hire_status == true">Available</td>
+                <td class="pt-0" *ngIf="viewFindJobModal.hire_status == false">Not Available</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Other Details</td>
+                <td class="pt-0">{{ viewFindJobModal.other_details }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- !Job Details -->
+
+  <!-- Employees -->
+  <!-- <div *ngIf="viewFindJobModal.ACCESS_JOB !== undefined">
+    <div class="card border-0 mt-3">
+      <div class="card-body">
+        <h5>Employees</h5>
+        <ol>
+          <li *ngFor="let employee of viewFindJobModal.ACCESS_JOB" (click)="viewUserTaskList(employee)">
+            {{ employee }}
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div> -->
+  <!-- !Employees -->
+
+</ng-template>
+<!-- !View Find Job Details -->
+
+
+<!-- View Request Employees Details -->
+<ng-template #requestEmployees>
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="Javascript:void(0)" (click)="goBack()">Jobs</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ viewRequestEmployeesModal.title | titlecase }}</li>
+    </ol>
+  </nav>
+  <!-- !Breadcrumb -->
+
+  <div class="row">
+    <div class="col text-right">
+      <button class="btn custom-btn mr-2" data-toggle="modal" data-target="#editRequestEmployeesDetailsModal">
+        <i class="fas fa-pen"></i>
+      </button>
+      <button class="btn btn-danger" (click)="deletePost()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Job Details -->
+  <div class="card text-left border-0 mt-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <img [attr.src]="viewRequestEmployeesModal.image_url" 
+            class="img-fluid shadow-sm">
+            <p *ngIf="user" class="text-muted created-by"><i>Created by: {{ user.profile.full_name }}</i></p>
+          <p class="text-muted last-updated"><i>Last Updated:
+              {{ viewRequestEmployeesLastUpdatedDate | date: 'short' }}</i></p>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <p class="text-uppercase font-weight-bold job-type">{{ viewRequestEmployeesModal.job_type_title }}</p>
+          <h3 class="job-title">{{ viewRequestEmployeesModal.title | titlecase }}</h3>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="px-0 text-muted">Time</td>
+                <td>{{ viewRequestEmployeesJobStartTime | date: 'short' }} -
+                  {{ viewRequestEmployeesJobEndTime | date: 'short' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Address</td>
+                <td class="pt-0">
+                  <span
+                    *ngIf="viewRequestEmployeesModal.address !== '' || viewRequestEmployeesModal.postcode !== null">{{ viewRequestEmployeesModal.address }},
+                    {{ viewRequestEmployeesModal.postcode }},</span>
+                  {{ viewRequestEmployeesModal.city | titlecase }}, {{ viewRequestEmployeesModal.state | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Salary/hr</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.salary_per_hour | currency:'MYR':'symbol-narrow':'.2-2' }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Number of Hires (person)</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.num_of_hires }}</td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Other Details</td>
+                <td class="pt-0">{{ viewRequestEmployeesModal.other_details }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- !Job Details -->
+
+  <!-- Employees -->
+  <!-- <div *ngIf="viewRequestEmployeesModal.ACCESS_JOB !== undefined">
+    <div class="card border-0 mt-3">
+      <div class="card-body">
+        <h5>Employees</h5>
+        <ol>
+          <li *ngFor="let employee of viewRequestEmployeesModal.ACCESS_JOB">
+            {{ employee }}
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div> -->
+  <!-- !Employees -->
+
+</ng-template>
+<!-- !View Request Employees Details -->
+
+
+<!-- Edit FindJob Details Model -->
+<div *ngIf="editFindJobModal" class="modal fade" id="editFindJobDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editFindJobDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="editUsersForm" (ngSubmit)="editPosts.form.valid && savePostDetails('FIND-JOB')"
+        #editPosts="ngForm" novalidate>
+        <div name="userModalHeader" class="modal-header border-0 text-white">
+          <h5 class="modal-title" id="editFindJobDetailsModalLabel">
+            Edit Post Details
+            <i class="fas fa-edit ml-2 text-white text-center"></i>
+          </h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-2">
+          <span class="text-center d-block mt-4">
+            <img name="propic" [attr.src]="viewImage" class="img-fluid mx-auto d-block" alt="Job Image">
+          </span>
+
+          <div class="form-group mt-5">
+            <label for="" class="font-weight-bold">Upload New Post Image</label>
+            <input type="file" #postImageInput class="form-control-file" (change)="postImagePreview($event)" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Title</label>
+            <input type="text" class="form-control" name="postTitle" [(ngModel)]="editFindJobModal.title" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job Type</label>
+            <select class="form-control" name="editUserExpertise" [(ngModel)]="editFindJobModal.job_type">
+              <option *ngFor="let item of expertiseList" value="{{ item.value }}">{{ item.display }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Available Start Time</label>
+            <input type="text" class="form-control" readonly value="{{ editFindJobAvailableStartTime | date: 'short' }}"
+              style="text-align: center" />
+            <input type="datetime-local" class="form-control" name="userNRIC"
+              [(ngModel)]="editFindJobModal.available_start_time" (change)="dateToTimestamp_AST()" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Available End Time</label>
+            <input type="text" class="form-control" readonly value="{{ editFindJobAvailableEndTime | date: 'short' }}"
+              style="text-align: center" />
+            <input type="datetime-local" class="form-control" name="userDOB"
+              [(ngModel)]="editFindJobModal.available_end_time" (change)="dateToTimestamp_AET()" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Salary Per Hour</label>
+            <input type="tel" class="form-control" name="userBirthPlace"
+              [(ngModel)]="editFindJobModal.salary_per_hour" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Hire Status</label>
+            <input type="text" class="form-control border-0" name="userAddress" readonly
+              value="{{ editFindJobModal.hire_status }}" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Hire Status</label>
+            <select class="form-control" name="editPostHireStatus" [(ngModel)]="editFindJobHireStatus">
+              <option>Available</option>
+              <option>Not Available</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Address</label>
+            <input type="text" class="form-control" name="userMarital" [(ngModel)]="editFindJobModal.address" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">State</label>
+            <select class="form-control" name="editUserState" [(ngModel)]="editFindJobModal.state">
+              <ng-container *ngFor="let item of stateCityList; let i = index">
+                <ng-container *ngIf="i > 0">
+                  <option *ngIf="item.admin !== '' && item.admin !== stateCityList[i-1].admin">
+                    {{ item.admin.toUpperCase() }}</option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">City</label>
+            <select class="form-control" name="editUserCity" [(ngModel)]="editFindJobModal.city">
+              <ng-container *ngFor="let item of stateCityList">
+                <option *ngIf="item.admin.toUpperCase() === upperCheck()">{{ item.city.toUpperCase() }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Other Details</label>
+            <input type="text" class="form-control" name="userLeaveDate" [(ngModel)]="editFindJobModal.other_details" />
+          </div>
+
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn custom-btn px-3" type="submit">
+            Submit<i class="fas fa-save pl-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !Edit FindJob Details Model -->
+
+
+<!-- Edit RequestEmployees Details Model -->
+<div *ngIf="editRequestEmployeesModal" class="modal fade" id="editRequestEmployeesDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editRequestEmployeesDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="editUsersForm" (ngSubmit)="editPosts.form.valid && savePostDetails('REQUEST-EMPLOYEE')"
+        #editPosts="ngForm" novalidate>
+        <div name="userModalHeader" class="modal-header border-0 text-white">
+          <h5 class="modal-title" id="editRequestEmployeesDetailsModalLabel">
+            Edit Post Details
+            <i class="fas fa-edit ml-2 text-white text-center"></i>
+          </h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-2">
+          <span class="text-center d-block mt-4">
+            <img name="propic" [attr.src]="viewImage" class="img-fluid mx-auto d-block" alt="Job Image">
+          </span>
+
+          <div class="form-group mt-5">
+            <label for="" class="font-weight-bold">Upload New Post Image</label>
+            <input type="file" #postImageInput2 class="form-control-file" (change)="postImagePreview($event)" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Title</label>
+            <input type="text" class="form-control" name="postTitle" [(ngModel)]="editRequestEmployeesModal.title" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job Type</label>
+            <select class="form-control" name="editUserExpertise" [(ngModel)]="editRequestEmployeesModal.job_type">
+              <option *ngFor="let item of expertiseList" [value] = "item.value">{{ item.display }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job Start Time</label>
+            <input type="text" class="form-control" readonly
+              value="{{ editRequestEmployeesJobStartTime | date: 'short' }}" style="text-align: center" />
+            <input type="datetime-local" class="form-control mt-2" name="jobStartTime"
+              [(ngModel)]="editRequestEmployeesModal.job_start_time" (change)="dateToTimestamp_JST()" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job End Time</label>
+            <input type="text" class="form-control" readonly
+              value="{{ editRequestEmployeesJobEndTime | date: 'short' }}" style="text-align: center" />
+            <input type="datetime-local" class="form-control mt-2" name="jobEndTime"
+              [(ngModel)]="editRequestEmployeesModal.job_end_time" (change)="dateToTimestamp_JET()" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Salary Per Hour</label>
+            <input type="tel" class="form-control" name="salary"
+              [(ngModel)]="editRequestEmployeesModal.salary_per_hour" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Number of Hires</label>
+            <input type="text" class="form-control" name="userAddress"
+              [(ngModel)]="editRequestEmployeesModal.num_of_hires" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Address</label>
+            <input type="text" class="form-control" name="userMarital"
+              [(ngModel)]="editRequestEmployeesModal.address" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Postcode</label>
+            <input type="text" class="form-control" name="postPostcode"
+              [(ngModel)]="editRequestEmployeesModal.postcode" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">State</label>
+            <select class="form-control" name="editUserState" [(ngModel)]="editRequestEmployeesModal.state">
+              <ng-container *ngFor="let item of stateCityList; let i = index">
+                <ng-container *ngIf="i > 0">
+                  <option *ngIf="item.admin !== '' && item.admin !== stateCityList[i-1].admin">
+                    {{ item.admin.toUpperCase() }}</option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">City</label>
+            <select class="form-control" name="editUserCity" [(ngModel)]="editRequestEmployeesModal.city">
+              <ng-container *ngFor="let item of stateCityList">
+                <option *ngIf="item.admin.toUpperCase() === upperCheck()">{{ item.city.toUpperCase() }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Other Details</label>
+            <input type="text" class="form-control" name="userLeaveDate"
+              [(ngModel)]="editRequestEmployeesModal.other_details" />
+          </div>
+
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn custom-btn px-3" type="submit">
+            Submit<i class="fas fa-save pl-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !Edit RequestEmployees Details Model -->
+
+<!-- Comments -->
+<ng-container *ngIf="totalComments !== 0">
+  <div class="card border-0 mt-3">
+    <div class="card-body">
+      <h5>Public Comments</h5>
+      <div class="row mt-4" *ngFor="let comment of comments">
+        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-2 col-3">
+          <img [attr.src]="comment.profile_image_url" alt="Profile Image" class="d-block mx-auto avatar-img" width="40">
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 col-7 pl-0">
+          <p class="text-muted comment-created-by">{{ comment.created_by_name }}</p>
+          <p class="comment-message">{{ comment.message }}</p>
+          <p class="mt-4 text-muted comment-created-date">{{ comment.created_date | date:'short' }}</p>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 text-right">
+          <button class="btn" (click)="deleteComment(comment)">
+            <i class="fas fa-trash-alt delete-comment-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<!-- !Comments -->

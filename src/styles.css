@@ -1,0 +1,53 @@
+:root {
+    --primaryColor: rgb(242, 255, 253);
+    --secondaryColor: rgb(19, 168, 158);
+}
+
+body {
+    background-color: var(--primaryColor);
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+/* Button */
+.custom-btn {
+    background-color: var(--secondaryColor);
+    color: var(--primaryColor);
+}
+
+.custom-btn:hover {
+    background-color: rgb(47, 146, 131);
+    color: var(--primaryColor);
+}
+/* !Button */
+
+/* Searchbar */
+.search-bar {
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .searchbar-input {
+        margin-top: 10px;
+    }
+}
+/* !Searchbar */
+
+/* Pagination */
+.custom-pagination {
+    font-size: 11pt;
+}
+  
+.custom-pagination /deep/ .ngx-pagination .current {
+    background: var(--secondaryColor);
+}
+/* !Pagination */
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+}
+/* !Breadcrumb */

@@ -1,0 +1,12 @@
+button:hover {
+    cursor: default;
+}
+
+.spinner-border {
+    display: block;
+    border-width: 8px;
+    width: 5em;
+    height: 5em;
+    margin-left: auto;
+    margin-right: auto;
+}

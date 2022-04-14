@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-10">
+      <h4 class="font-weight-bold mb-5 text-uppercase">Transaction History</h4>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-lg btn-success float-right" (click)="exportExcel()">Export <i class="fas fa-file-export"></i></button>
+    </div>
+  </div>
+  <nav>
+    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-segment1-tab" data-toggle="tab" href="#nav-segment1" role="tab" aria-controls="nav-segment1" aria-selected="true">Segment One</a>
+      <a class="nav-item nav-link" id="nav-segment2-tab" data-toggle="tab" href="#nav-segment2" role="tab" aria-controls="nav-segment2" aria-selected="false">Segment Two</a>
+      <a class="nav-item nav-link" id="nav-segment3-tab" data-toggle="tab" href="#nav-segment3" role="tab" aria-controls="nav-segment3" aria-selected="false">Segment Three</a>
+    </div>
+  </nav>
+  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-segment1" role="tabpanel" aria-labelledby="nav-segment1-tab">
+      <div class="table-responsive">
+        <table class="table table-hover" width="100%" id="table_transation">
+          <thead class="text-uppercase">
+            <tr>
+              <th>Transaction ID</th>
+              <th>Post ID</th>
+              <th>Jobs</th>
+              <th>Pay By</th>
+              <th>Pay To</th>
+              <th>Date Time</th>
+              <th class="text-right">Amount (MYR)</th>
+              <th class="text-right">Charges (MYR)</th>
+              <th class="text-center">Pay (MYR)</th>
+              <th>Bank Name</th>
+              <th>Account No</th>
+              <th>Beneficiary Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let transaction of transactionList1">
+              <ng-container>
+                <td scope="row">{{ transaction.tran_id }}</td>
+                <td>{{ transaction.job_id }}</td>
+                <td>{{ transaction.title }}</td>
+                <td>{{ transaction.pay_by_name }}</td>
+                <td>{{ transaction.pay_to_name }}</td>
+                <td>{{ transaction.pay_date | date: 'medium' }}</td>
+                <td class="text-right">{{ transaction.amount | number: '1.2-2' }}</td>
+                <td class="text-right">{{ transaction.charges | number: '1.2-2' }}</td>
+                <td class="text-right">{{ transaction.pay | number: '1.2-2' }}</td>
+                <td>{{ transaction.bank_name }}</td>
+                <td>{{ transaction.bank_acc }}</td>
+                <td>{{ transaction.beneficiary }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>  
+      <div class="text-center">
+        <button class="btn btn btn-info btn-sm float-left ml-2" (click)="getTransactionHistory('prev', 1)"
+                [disabled]="disablePrev1">Previous</button> <b>Page no: {{ currentPage1 }}</b>
+        <button class="btn btn btn-info btn-sm float-right mr-2" (click)="getTransactionHistory('next', 1)" [disabled]="disableNext1">Next</button>
+      </div>
+    </div>
+    <div class="tab-pane fade show" id="nav-segment2" role="tabpanel" aria-labelledby="nav-segment2-tab">
+      <div class="table-responsive">
+        <table class="table table-hover" width="100%" id="table_transation">
+          <thead class="text-uppercase">
+            <tr>
+              <th>Transaction ID</th>
+              <th>Advertise ID</th>
+              <th>Advertisement</th>
+              <th>Pay By</th>
+              <th>Date Time</th>
+              <th class="text-right">Amount (MYR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let transaction of transactionList2">
+              <ng-container>
+                <td scope="row">{{ transaction.tran_id }}</td>
+                <td>{{ transaction.advertise_id }}</td>
+                <td>{{ transaction.title }}</td>
+                <td>{{ transaction.pay_by_name }}</td>
+                <td>{{ transaction.pay_date | date: 'medium' }}</td>
+                <td class="text-right">{{ transaction.amount | number: '1.2-2' }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div> 
+      <div class="text-center">
+        <button class="btn btn btn-info btn-sm float-left ml-2" (click)="getTransactionHistory('prev', 2)"
+                [disabled]="disablePrev2">Previous</button> <b>Page no: {{ currentPage2 }}</b>
+        <button class="btn btn btn-info btn-sm float-right mr-2" (click)="getTransactionHistory('next', 2)" [disabled]="disableNext2">Next</button>
+      </div> 
+    </div>
+    <div class="tab-pane fade show" id="nav-segment3" role="tabpanel" aria-labelledby="nav-segment3-tab">
+      <div class="table-responsive">
+        <table class="table table-hover" width="100%" id="table_transation">
+          <thead class="text-uppercase">
+            <tr>
+              <th>Transaction ID</th>
+              <th>Vacancy ID</th>
+              <th>Vacacny</th>
+              <th>Pay By</th>
+              <th>Date Time</th>
+              <th class="text-right">Amount (MYR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let transaction of transactionList3">
+              <ng-container>
+                <td scope="row">{{ transaction.tran_id }}</td>
+                <td>{{ transaction.vacancy_id }}</td>
+                <td>{{ transaction.title }}</td>
+                <td>{{ transaction.pay_by_name }}</td>
+                <td>{{ transaction.pay_date | date: 'medium' }}</td>
+                <td class="text-right">{{ transaction.amount | number: '1.2-2' }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div> 
+      <div class="text-center">
+        <button class="btn btn btn-info btn-sm float-left ml-2" (click)="getTransactionHistory('prev', 3)"
+                [disabled]="disablePrev3">Previous</button> <b>Page no: {{ currentPage3 }}</b>
+        <button class="btn btn btn-info btn-sm float-right mr-2" (click)="getTransactionHistory('next', 3)" [disabled]="disableNext3">Next</button>
+      </div> 
+    </div>
+  </div>

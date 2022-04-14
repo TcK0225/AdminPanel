@@ -1,0 +1,56 @@
+<ngx-spinner></ngx-spinner>
+<div class="row">
+  <div class="col-10">
+    <h4 class="font-weight-bold mb-5 text-uppercase">USERS</h4>
+  </div>
+  <div class="col-2">
+    <button class="btn btn-lg btn-success float-right" (click)="exportUsers()">Export</button>
+  </div>
+</div>
+<div class="input-group mb-3 searchbar-input">
+  <input type="text" class="form-control border-0 search-bar shadow-sm" placeholder="Search here"
+    aria-label="Search job details" aria-describedby="basic-addon2" [(ngModel)]="searchUserString"
+    [ngModelOptions]="{ standalone: true }">
+    <div class="input-group-append">
+      <button class="btn btn-info" type="button" (click)="search()">Search</button>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-outline" type="button" (click)="getUsersList('start'); searchUserString = null"><i class="fas fa-undo-alt"></i></button>
+    </div>
+</div>
+
+<div class="card border-0">
+  <div class="card-body">
+    <div class="table-reponsive">
+      <table class="table table-hover">
+        <thead class="text-uppercase">
+          <tr>
+            <th>Full Name</th>
+            <th>Gender</th>
+            <th>Email Address</th>
+            <th>Contact Number</th>
+            <th>Expertise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of usersList "
+            class="table-content" (click)="viewUserDetails(user)">
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.email | lowercase }}</td>
+            <td>{{ user.contact_no }}</td>
+            <td>{{ user.expertise_in }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn btn-info btn-sm float-left" (click)="getUsersList('prev')"
+              [disabled]="disablePrev">Previous</button> <b>Page no: {{ currentPage }}</b>
+      <button class="btn btn btn-info btn-sm float-right" (click)="getUsersList('next')" [disabled]="disableNext">Next</button>
+    </div>
+
+  </div>
+</div>

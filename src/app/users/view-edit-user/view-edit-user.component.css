@@ -1,0 +1,67 @@
+/* Breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+}
+/* !Breadcrumb */
+
+
+/* User Details */ 
+.fa-venus {
+    color: rgb(255, 91, 255);
+}
+
+.dob {
+    font-size: 10pt;
+    color: rgb(179, 179, 179);
+}
+
+.email-address {
+    margin-top: -10px;
+}
+
+img {
+    border-radius: 10px;
+}
+
+@media(max-width: 768px) {
+    .name-gender {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .dob {
+        text-align: center;
+    }
+}
+/* !User Details */ 
+
+
+/* Comments */
+.comment-created-by {
+    font-size: 11pt;
+}
+
+.star-rating {
+    display: inline-block !important; 
+    margin-left: 10px;
+}
+
+.comment-message {
+    margin-top: -10px;
+}
+
+.comment-created-date {
+    font-size: 10pt;
+}
+
+.delete-comment-icon {
+    color: red;
+}
+/* !Comments */
+
+
+/* Modal */
+.modal-header {
+    background-color: var(--secondaryColor);
+}
+/* !Modal */

@@ -1,0 +1,49 @@
+<ngx-spinner></ngx-spinner>
+
+<h4 class="font-weight-bold mb-5 text-uppercase">VACANCY</h4>
+
+<div class="input-group mb-3 searchbar-input">
+  <input type="text" class="form-control border-0 search-bar shadow-sm" placeholder="Search here"
+    aria-label="Search job details" aria-describedby="basic-addon2" [(ngModel)]="vacancyDetailsFilter"
+    [ngModelOptions]="{ standalone: true }">
+    <div class="input-group-append">
+      <button class="btn btn-info" type="button" (click)="search()">Search</button>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-outline" type="button" (click)="getVacancy('start'); vacancyDetailsFilter=null"><i class="fas fa-undo-alt"></i></button>
+    </div>
+</div>
+
+<div class="card border-0 mt-4">
+  <div class="card-body">
+    <div class="table-reponsive">
+      <table class="table table-hover">
+        <thead class="text-uppercase">
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Field</th>
+            <th>Address</th>
+            <th>Created On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vac of vacancyList" (click)="viewVacDetails(vac.id)"
+            class="table-content">            
+              <td [ngClass]="{'active': vac.status == 1, 'deactive': vac.status == 0}" >{{ vac.title }}</td>
+              <td [ngClass]="{'active': vac.status == 1, 'deactive': vac.status == 0}">{{ vac.job_category }}</td>
+              <td [ngClass]="{'active': vac.status == 1, 'deactive': vac.status == 0}">{{ vac.job_type_title }}</td>
+              <td [ngClass]="{'active': vac.status == 1, 'deactive': vac.status == 0}">{{ vac.address }}</td>
+              <td [ngClass]="{'active': vac.status == 1, 'deactive': vac.status == 0}">{{ vac.created_at| date: 'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn btn-info btn-sm float-left" (click)="getVacancy('prev')"
+              [disabled]="disablePrev">Previous</button> <b>Page no: {{ currentPage }}</b>
+      <button class="btn btn btn-info btn-sm float-right" (click)="getVacancy('next')" [disabled]="disableNext">Next</button>
+    </div>
+  </div>
+</div>

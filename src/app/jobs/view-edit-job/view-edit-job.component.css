@@ -1,0 +1,58 @@
+/* Job Details */
+img {
+    border-radius: 10px;
+}
+
+.job-type, .created-by, .last-updated {
+    font-size: 10pt;
+    color: rgb(179, 179, 179);
+}
+
+.job-title {
+    margin-top: -5px;
+}
+
+.last-updated {
+    margin-top: -15px;
+}
+
+@media(max-width: 768px) {
+    .job-type {
+        margin-top: 20px;
+    }
+}
+/* !Job Details*/
+
+
+/* Modal */
+.modal-header {
+    background-color: var(--secondaryColor);
+}
+/* !Modal */
+
+
+/* Comments */
+.avatar-img {
+    border-radius: 50px;
+}
+
+.comment-created-by {
+    font-size: 11pt;
+}
+
+.comment-message {
+    margin-top: -10px;
+}
+
+.comment-created-date {
+    font-size: 10pt;
+}
+
+.edit-comment-icon {
+    color: var(--secondaryColor);
+}
+
+.delete-comment-icon {
+    color: red;
+}
+/* !Comments */

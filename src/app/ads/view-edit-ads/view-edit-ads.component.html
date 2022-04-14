@@ -1,0 +1,170 @@
+<ngx-spinner></ngx-spinner>
+
+<!-- Ads Details -->
+<ng-container *ngIf = "viewAdsModal && viewAdsModal.created_by">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="Javascript:void(0)" (click)="goBack()">Advertisement</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ viewAdsModal.title | titlecase }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col text-right">
+      <button class="btn custom-btn mr-2" data-toggle="modal" data-target="#editAdsDetailsModal">
+        <i class="fas fa-pen"></i>
+      </button>
+      <button class="btn btn-danger" (click)="deleteAds()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="card border-0 mt-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <img [attr.src]="viewAdsModal.image_url"  class="img-fluid shadow-sm">
+          <p class="text-muted created-by"><i>Created by: {{ viewAdsModal.created_by.full_name }}</i></p>
+          <p class="text-muted last-updated"><i>Last Updated: {{ viewAdsModal.updated_at | date: 'short' }}</i></p>
+        </div>
+        <div class="col">
+          <p class="text-uppercase font-weight-bold job-type">{{ viewAdsModal.job_type_title }}</p>
+          <h3 class="job-title">{{ viewAdsModal.title | titlecase }}</h3>
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td scope="row" class="px-0 text-muted">Available Period</td>
+                <td>{{ viewAdsModal.created_at | date: 'short' }} until
+                    {{ viewAdsModal.expired_date | date: 'short' }}
+                </td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Address</td>
+                <td class="pt-0">{{ viewAdsModal.address }},
+                  {{ viewAdsModal.city | titlecase }}, {{ viewAdsModal.state | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td scope="row" class="px-0 pt-0 text-muted">Contact No.</td>
+                <td class="pt-0">{{ viewAdsModal.cty_code }} {{ viewAdsModal.contact }}</td>
+              </tr>
+              <tr *ngIf = "viewAdsModal.website">
+                <td scope="row" class="px-0 pt-0 text-muted">Website</td>
+                <td class="pt-0"><a href="//{{viewAdsModal.website}}" target="_blank">{{ viewAdsModal.website }}</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-3" id="details">
+    <div class="card-body">
+      <h3>Other Details</h3>
+      <div [innerHTML]="viewAdsModal.other_details"></div> 
+    </div>
+  </div>
+
+</ng-container>
+<!-- !Ads Details -->
+
+
+<!-- Edit Ads Details Model -->
+<div *ngIf="editAdsModal" class="modal fade" id="editAdsDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editAdsetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="editAdsForm" (ngSubmit)="editAds.form.valid && saveAdsDetails()"
+        #editAds="ngForm" novalidate>
+        <div name="userModalHeader" class="modal-header border-0 text-white">
+          <h5 class="modal-title" id="editAdsDetailsModalLabel">
+            Edit Advertisement Details
+            <i class="fas fa-edit ml-2 text-white text-center"></i>
+          </h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-2">
+          <span class="text-center d-block mt-4">
+            <img name="propic" [attr.src]="viewImage" class="img-fluid mx-auto d-block" alt="Advertise Image">
+          </span>
+
+          <div class="form-group mt-5">
+            <label for="" class="font-weight-bold">Upload New Advertisement Image</label>
+            <input type="file" #adsImageInput class="form-control-file" (change)="adsImagePreview($event)" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Title</label>
+            <input type="text" class="form-control" name="adsTitle" [(ngModel)]="editAdsModal.title" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Job Type</label>
+            <select class="form-control" name="editAdsExpertise" [(ngModel)]="editAdsModal.job_type">
+              <option *ngFor="let item of expertiseList" value="{{ item.value }}">{{ item.display }}</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Contact</label>
+            <div class="input-group">
+                <div class="input-group-append">
+                    <span class="input-group-text">{{ editAdsModal.cty_code }}</span>
+                </div>
+                <input type="text" class="form-control" name="contact" [(ngModel)]="editAdsModal.contact" />
+            </div>
+            
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Address</label>
+            <input type="text" class="form-control" name="address" [(ngModel)]="editAdsModal.address" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">State</label>
+            <select class="form-control" name="editAdsState" [(ngModel)]="editAdsModal.state">
+              <ng-container *ngFor="let item of stateCityList; let i = index">
+                <ng-container *ngIf="i > 0">
+                  <option *ngIf="item.admin !== '' && item.admin !== stateCityList[i-1].admin">
+                    {{ item.admin.toUpperCase() }}</option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">City</label>
+            <select class="form-control" name="editAdsCity" [(ngModel)]="editAdsModal.city">
+              <ng-container *ngFor="let item of stateCityList">
+                <option *ngIf="item.admin.toUpperCase() === upperCheck()">{{ item.city.toUpperCase() }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Website</label>
+            <input type="text" class="form-control" name="website" [(ngModel)]="editAdsModal.website" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Other Details</label>
+            <ckeditor name="adsOtherDetails" [editor]="Editor" [(ngModel)]="editAdsModal.other_details "></ckeditor>
+            <!-- <textarea class="form-control" name="adsOtherDetails" [(ngModel)]="editAdsModal.other_details">editAdsModal.other_details</textarea> -->
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn custom-btn px-3" type="submit">
+            Submit<i class="fas fa-save pl-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !Edit Ads Details Model -->
+

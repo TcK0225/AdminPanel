@@ -1,0 +1,34 @@
+<h4 class="font-weight-bold mb-4 text-uppercase">Platform Charges</h4>
+
+<div class="card border-0">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="text-uppercase">
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Owed By</th>
+                        <th>Date</th>
+                        <th class="text-right">Amount (MYR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let details of chargesArray | paginate: { itemsPerPage: 20, currentPage: chargesPage }; trackBy: trackItem">
+                        <ng-container *ngIf="details.status === 'succeeded'">
+                            <td scope="row">{{ details.transID }}</td>
+                            <td>{{ details.userName }}</td>
+                            <td>{{ details.date.toDate() | date: 'medium' }}</td>
+                            <td class="text-right">{{ details.amount }}</td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-5 text-right">
+            <pagination-controls (pageChange)="chargesPage = $event" class="custom-pagination">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

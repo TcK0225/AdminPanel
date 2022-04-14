@@ -1,0 +1,29 @@
+.task-card {
+  cursor: pointer;
+}
+
+.card-header {
+  font-size: 16pt;
+}
+
+.delete-icon {
+  color: rgb(241, 0, 0);
+}
+
+.avatar-img {
+  border-radius: 50px;
+}
+
+.posted-by {
+  font-size: 10pt;
+  margin-bottom: 5px;
+  color: grey;
+}
+
+.type {
+  color: rgb(19, 168, 158);
+}
+
+.table {
+  table-layout: fixed;
+}

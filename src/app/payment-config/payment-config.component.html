@@ -1,0 +1,167 @@
+<ngx-spinner></ngx-spinner>
+
+<h4 class="font-weight-bold mb-4 text-uppercase">Configuration</h4>
+
+<div class="card border-0">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th colspan="2" class="bg-success text-white">
+                            Charge Types
+                        </th>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Create Advertisements (MYR)</th>
+                            <td><input type="number" style="text-align: center;"[(ngModel)] = "createCharges"></td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Update Advertisements (MYR)</th>
+                            <td><input type="number" style="text-align: center;" [(ngModel)] = "updateCharges" ></td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Create Vacancies (MYR)</th>
+                            <td><input type="number" style="text-align: center;"[(ngModel)] = "createVCharges"></td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Update Vacancies (MYR)</th>
+                            <td><input type="number" style="text-align: center;" [(ngModel)] = "updateVCharges" ></td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Platform Charges (%)</th>
+                            <td><input type="number" style="text-align: center;"[(ngModel)] = "platformCharges"></td>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Service Charges (MYR)</th>
+                            <td><input type="number" style="text-align: center;" [(ngModel)] = "serviceCharges" ></td>
+                        </ng-container>
+                    </tr>
+
+                    <tr>
+                        <th colspan="2" class="bg-success text-white">
+                            Period
+                        </th>
+                    </tr>
+                    <tr>
+                        <ng-container>
+                            <th scope="row">Advertisement Period (Days)</th>
+                            <td><input type="number" style="text-align: center;" [(ngModel)] = "advertiseDays" ></td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="2"><button class="btn btn-lg btn-success" (click)="editPaymentConfig()">Save Changes</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<h4 class="font-weight-bold mb-4 text-uppercase mt-3">Job Field Types</h4>
+<div class="card border-0">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="text-uppercase">
+                    <tr>
+                        <th rowspan="2" class="align-middle">ID</th>
+                        <th colspan="3" class="text-center">Title</th>
+                        <th rowspan="2" class="align-middle">Image</th>
+                        <th rowspan="2" class="align-middle">Action</th>
+                    </tr>
+                    <tr>
+                        <th>English</th>
+                        <th>Chinese</th>
+                        <th>Malay</th>
+                      </tr>
+                  </thead>
+                <tbody>
+                    <tr *ngFor="let expertise of expertiseList" 
+                        class="table-content">            
+                        <td>{{ expertise.value }}</td>
+                        <td>{{ expertise.display }}</td>
+                        <td>{{ expertise.zh }}</td>
+                        <td>{{ expertise.ms }}</td>
+                        <td class="bg-dark text-center"><img [attr.src]="expertise.img" style="width: auto; height: 100px;"></td>
+                        <td><button class="btn btn-lg custom-btn" (click)="checkSelectedExp(expertise)"><i class="fa fa-edit"></i></button></td>
+                    </tr>
+                </tbody>
+                <!-- <tfoot>
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <button class="btn btn-lg btn-success"><i class="fa fa-plus"></i></button>
+                        </td>
+                    </tr>
+                </tfoot> -->
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Edit Expertise Modal -->
+<div *ngIf="selectedExpertise" class="modal fade" id="editExpDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="editExpDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="editExpForm" (ngSubmit)="editExp.form.valid && saveExpDetails()"
+        #editExp="ngForm" novalidate>
+        <div name="expModalHeader" class="modal-header border-0 text-white">
+          <h5 class="modal-title" id="editExpDetailsModalLabel">
+            Edit Expertise Details
+            <i class="fas fa-edit ml-2 text-white text-center"></i>
+          </h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-2">
+          <span class="text-center d-block mt-1 bg-dark px-2 py-2">
+            <img name="propic" [attr.src]="viewImage" class="img-fluid mx-auto d-block" alt="Expertise Icon">
+          </span>
+
+          <div class="form-group mt-5">
+            <label for="" class="font-weight-bold">Upload New Expertise Icon</label>
+            <input type="file" #expImageInput class="form-control-file" (change)="expImagePreview($event)" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">English Title</label>
+            <input type="text" class="form-control" name="enTitle" [(ngModel)]="selectedExpertise.display" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Chinese Title</label>
+            <input type="text" class="form-control" name="zhTitle" [(ngModel)]="selectedExpertise.zh" />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="" class="font-weight-bold">Malay Title</label>
+            <input type="text" class="form-control" name="msTitle" [(ngModel)]="selectedExpertise.ms" />
+          </div>          
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn custom-btn px-3" type="submit">
+            Submit<i class="fas fa-save pl-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- !Edit Ads Details Model -->
