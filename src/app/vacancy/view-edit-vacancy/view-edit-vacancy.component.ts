@@ -64,8 +64,9 @@ export class ViewEditVacancyComponent implements OnInit {
 
   public stateCityList: any = (stateCityList as any).default;
 
-  minValue: number = 1;
+  minValue: number = 0;
   maxValue: number = 20000;
+  step: 100,
   options: Options = {
     floor: 1,
     ceil: 20000,
